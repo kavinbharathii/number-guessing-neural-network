@@ -4,13 +4,13 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
-model = keras.models.load_model('[PATH TO YOUR MODEL HERE]')
+model = keras.models.load_model('num_guesser.model')
 
 rez = 20
 width = 560
 height = 560
 display = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Pixel Art')
+pygame.display.set_caption('Number Guesser')
 
 
 num_arr = np.zeros(shape=(28, 28), dtype=np.float)
@@ -54,11 +54,16 @@ def main():
                 if event.key == pygame.K_SPACE:
                     num_arr.shape = (1, 784)
                     prediction = model.predict(num_arr)
+                    num_guessed = list(prediction[0]).index(max(prediction[0]))
+                    confidence = round(max(prediction[0]) * 100, 2)
                     print('\n')
 
                     for index, result in enumerate(prediction[0]):
                         print(
                             f'label {index}: % confidence = {round(result * 100, 2)}%\n')
+
+                    print(
+                        f'number guessed: {num_guessed}; confidence = {confidence}%')
 
         pygame.display.flip()
 
