@@ -2,7 +2,7 @@
 number guesser in python using tensorflow
 
 number guessing model and a GUI using pygame
-model made from tensorflow
+model made from tensorflow /n
 tensorflow => https://www.tensorflow.org/
 
 <h3>Description about the project</h3>
