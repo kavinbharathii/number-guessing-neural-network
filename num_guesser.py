@@ -1,19 +1,31 @@
+# -------------------------------------------------------------------------------------------------------------------------#
+# libraries used
+
 import pygame
-# import math
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
+# -------------------------------------------------------------------------------------------------------------------------#
+# loading the model to use it later
+
 model = keras.models.load_model('num_guesser.model')
 
-rez = 20
+# -------------------------------------------------------------------------------------------------------------------------#
+# global variables
+
 width = 560
 height = 560
+rez = 20
+
 display = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Number Guesser')
 
-
 num_arr = np.zeros(shape=(28, 28), dtype=np.float)
+
+# -------------------------------------------------------------------------------------------------------------------------#
+# returns the arguments required to draw a rect
+# at a given place
 
 
 def get_rect_pos():
@@ -21,11 +33,17 @@ def get_rect_pos():
     y = pygame.mouse.get_pos()[1]
     return (x - (x % rez), y - (y % rez), rez, rez)
 
+# -------------------------------------------------------------------------------------------------------------------------#
+# returns the indices of the position in the grid
+
 
 def get_grid_pos():
     x = pygame.mouse.get_pos()[0]
     y = pygame.mouse.get_pos()[1]
     return x // rez, y // rez
+
+# -------------------------------------------------------------------------------------------------------------------------#
+# drawing the grid lines
 
 
 def draw_grid():
@@ -36,6 +54,9 @@ def draw_grid():
     for j in range(1, int(height / rez)):
         pygame.draw.line(display, (255, 255, 255),
                          (0, j * rez), (height, j * rez))
+
+# -------------------------------------------------------------------------------------------------------------------------#
+# main loop
 
 
 def main():
@@ -52,21 +73,34 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+
+                    # reshaping the input array to get the prediction
                     num_arr.shape = (1, 784)
                     prediction = model.predict(num_arr)
                     num_guessed = list(prediction[0]).index(max(prediction[0]))
                     confidence = round(max(prediction[0]) * 100, 2)
                     print('\n')
 
+                    print(
+                        f'number guessed: {num_guessed}; confidence = {confidence}%')
+
+                    print('\n')
+                    print('----------------Stats----------------')
+                    print('\n')
+
+                    # getiing the labels and their respective confidence scores
                     for index, result in enumerate(prediction[0]):
                         print(
                             f'label {index}: % confidence = {round(result * 100, 2)}%\n')
 
-                    print(
-                        f'number guessed: {num_guessed}; confidence = {confidence}%')
+                    print('\n')
 
         pygame.display.flip()
 
 
+# -------------------------------------------------------------------------------------------------------------------------#
+# calling the main function
 if __name__ == '__main__':
     main()
+
+# -------------------------------------------------------------------------------------------------------------------------#
