@@ -1,8 +1,8 @@
 # number-guessing-neural-network
 number guesser in python using tensorflow
 
-number guessing model and a GUI using pygame
-model made from tensorflow
+<div>number guessing model and a GUI using pygame</div>
+<div>model made from tensorflow</div>
 
 tensorflow => https://www.tensorflow.org/
 
